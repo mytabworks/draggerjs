@@ -1,0 +1,42 @@
+.drag-container {  
+    display: flex;
+    flex-wrap: wrap;
+    height: 250px;  
+    position: relative;
+}
+.drag-container > .droppable-area {
+    flex: 1 1;
+    width: 100%; 
+    border: 2px dashed #fff;
+    border-radius: 15px;
+    padding: 15px;
+    transition: box-shadow 300ms ease-in;
+    height: 100%;
+}
+.drag-container > .droppable-area + .droppable-area {
+    margin-left: 15px
+}
+.drag-container .draggable-box {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 50px;
+    min-height: 50px;
+    padding: 0 10px; 
+    border-radius: 10px;
+    transition: box-shadow 300ms ease-in;
+    cursor: grab;
+}
+.drag-container .draggable-box[hidden] {
+    display: none !important;
+}
+.drag-container .draggable-box > h1 { 
+    margin-bottom: 5px;
+}
+.drag-container .droppable-area > .draggable-box:not(:last-child) {
+    margin-right: 5px;
+}
+.drag-container .grabbed {
+    cursor: grabbing;
+    margin: 0;
+}
