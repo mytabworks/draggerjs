@@ -1,2 +1,5 @@
 /node_modules
 /types
+/lib/package.json
+/lib/LICENSE
+/lib/README.md
