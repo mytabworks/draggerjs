@@ -162,7 +162,7 @@ export default class Dragger {
 					if (droppableQuery) {
 
 						const {
-							srcDropable,
+							srcDroppable,
 							droppableTarget,
 							isOverDroppable,
 						} = getDroppable({
@@ -175,35 +175,35 @@ export default class Dragger {
                         });
                         
 						if (isOverDroppable) {
-							if (startDraggingObservables.droppableAt !== srcDropable) {
+							if (startDraggingObservables.droppableAt !== srcDroppable) {
 								if(is.fnc(dragenter)) {
                                     // @ts-ignore
-									dragenter!.call(srcDropable, new DraggerEvent(moveEvent, {
+									dragenter!.call(srcDroppable, new DraggerEvent(moveEvent, {
 										...draggerEvent,
 										type: 'dragenter',
-										srcDropable,
+										srcDroppable,
 										droppableTarget,
                                     }));
                                 }
                                 
                                 if(startDraggingObservables.droppableAt && is.fnc(dragexit)) {
                                     // @ts-ignore
-									dragexit!.call(srcDropable, new DraggerEvent(moveEvent, {
+									dragexit!.call(srcDroppable, new DraggerEvent(moveEvent, {
 										...draggerEvent,
 										type: 'dragexit',
-										srcDropable: startDraggingObservables.droppableAt,
+										srcDroppable: startDraggingObservables.droppableAt,
                                     }));
                                 }
                             }
                             
-                            startDraggingObservables.droppableAt = srcDropable;
+                            startDraggingObservables.droppableAt = srcDroppable;
                             
 							if(is.fnc(dragover)) {
                                 // @ts-ignore
 								dragover!.call(container, new DraggerEvent(moveEvent, {
 									...draggerEvent, 
 									type: 'dragover',
-									srcDropable,
+									srcDroppable,
 									droppableTarget,
                                 }))
                             }
@@ -239,7 +239,7 @@ export default class Dragger {
                     }
                     
 					const {
-						srcDropable,
+						srcDroppable,
 						droppableTarget,
 						isOverDroppable,
 					} = getDroppable({
@@ -253,10 +253,10 @@ export default class Dragger {
 					
                     if(isOverDroppable && is.fnc(drop)) {
                         // @ts-ignore
-                        drop!.call(srcDropable, new DraggerEvent(endEvent, {
+                        drop!.call(srcDroppable, new DraggerEvent(endEvent, {
                             ...draggerEvent,
                             type: 'drop',
-                            srcDropable,
+                            srcDroppable,
                             droppableTarget,
                         }))
                     }

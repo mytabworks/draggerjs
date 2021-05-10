@@ -86,7 +86,7 @@ export type DraggerEventOptionProps = {
     endY: number,
     clientX: number,
     clientY: number,
-    srcDropable?: HTMLElement | null;
+    srcDroppable?: HTMLElement | null;
     droppableTarget?: HTMLElement | null; 
 };
 
@@ -183,11 +183,11 @@ export const getDroppable = ({target, droppableQuery, point: { x, y} }: GetDropp
     target.hidden = true
     const droppableTarget = d.elementFromPoint(x, y) as HTMLElement | null
     target.hidden = false
-    const srcDropable: HTMLElement | null = droppableTarget && droppableTarget.closest(droppableQuery)
-    const isOverDroppable = srcDropable && srcDropable.matches(droppableQuery)
+    const srcDroppable: HTMLElement | null = droppableTarget && droppableTarget.closest(droppableQuery)
+    const isOverDroppable = srcDroppable && srcDroppable.matches(droppableQuery)
     return {
         droppableTarget,
-        srcDropable,
+        srcDroppable,
         isOverDroppable
     }
 }

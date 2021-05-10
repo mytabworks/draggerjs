@@ -40,7 +40,7 @@ export declare type DraggerEventOptionProps = {
     endY: number;
     clientX: number;
     clientY: number;
-    srcDropable?: HTMLElement | null;
+    srcDroppable?: HTMLElement | null;
     droppableTarget?: HTMLElement | null;
 };
 export declare class DraggerEvent {
@@ -89,7 +89,7 @@ declare type GetDroppableProps = {
 };
 export declare const getDroppable: ({ target, droppableQuery, point: { x, y } }: GetDroppableProps) => {
     droppableTarget: HTMLElement | null;
-    srcDropable: HTMLElement | null;
+    srcDroppable: HTMLElement | null;
     isOverDroppable: boolean | null;
 };
 declare type AutoScrollAlgorithmProps = {
