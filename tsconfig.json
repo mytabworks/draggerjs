@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "rootDir": "src/components",
+    "outDir": "lib",
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "react",
+    "moduleResolution": "node",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "noUnusedLocals": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "esModuleInterop": true,
+    "lib": ["dom", "es2019"],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "lint": {
+          "validProperties": ["composes"]
+        }
+      }
+    ],
+    "module": "esnext",
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "strictFunctionTypes": false,
+    "target": "esnext"
+  },
+  "include": ["src/components"]
+}
