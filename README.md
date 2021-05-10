@@ -1,74 +1,135 @@
-# retoast
-stateless react toaster made easy.
+# draggerjs
+is a pure vanila javascript without dependency which is use to drag and drop elements in easy and understabdable way.
 
 # installation
 ```
-npm i retoast
+npm i draggerjs
 ```
 or
 ```
-yarn add retoast
+yarn add draggerjs
 ```
 
 ## import to your project
 ```js
-import retoast from 'retoast'
+import Draggerjs from 'draggerjs'
 ```
 
-### import the css
-```js
-import 'retoast/dist/css/main.css'
-```
+# **_Options Props_**
 
-# **_Props_**
+axis?: 'x' | 'y'; - if dragging is specifically only for x or y
 
-**key** (_optional_): **_any_**
-_{it makes the toaster controllable}_
+draggable?: string; - selector of draggable elements
 
-**body** (_required_): **_string | reactnode_**
-_{the body of the toaster}_
+droppable?: string; - selector of droppable elements
 
-**className** (_optional_): **_string_**
-_{you can add class for to toaster}_
+allowBoundContainer?: boolean; - when true the draggable elements will be bound to container
 
-**classEnter** (_optional_): **_string_**
-_{you can customize your own class animation enter}_
+allowExactTargetDraggable?: boolean; - when true the target you hold will be the draggable element
 
-**classExit** (_optional_): **_string_**
-_{you can customize your own class animation exit}_
+autoscroll?: boolean; - when true it will auto scroll any scrollable container when you drag the element on the edge
 
-**variant** (_optional_): **_'primary' | 'success' | 'danger' | 'warning' | 'info'_**
-_{the variant of the toaster}_
+autoscrollSensitivity?: number; - the sensitivity of the edge scrolling; default 20
 
-**placement** (_optional_): **_'top' | 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right'_**
-_{the position of the toaster}_
-
-**duration** (_optional_): **_number_**
-_{the duration that stay the toaster when put **0** the toaster will stay forever}_
-
-**delay** (_optional_): **_number_**
-_{the duration/timing of the animation}_
-
-**dismissible** (_optional_): **_boolean_**
-_{when true it will show a close button}_
+eventListenerOption?: any - the option of the addEventListener and removeEventListener
 
 
-**onMount** (_optional_): **_function_**
-_{to determine if the toaster is mounted}_
+# **_Methods_**
 
-**onUnmount** (_optional_): **_function_**
-_{to determine if the toaster is unmounted}_
+destroy() - to destroy the event listner use in draggerjs
 
-**onDismissed** (_optional_): **_function_**
-_{to determine if the toaster is close by clicking dismissed button}_
 # _**Usage**_
 
+JAVASCRIPT
 ```js
-retoast({
-    body: 'show me toast'
+const dragger = new Draggerjs('#drag-autoscroll', {
+    draggable: '.draggable-box',
+    autoscroll: true
 })
+
+dragger.on('dragstart', (e) => { 
+    const target = e.target
+    if(e.isDraggableElement) {
+        // prevent mobile from scrolling
+        // when dragging draggable element
+        e.preventDefault()
+        target.classList.add('grabbed')
+        if(target.classList.contains('center')) {
+            target.classList.remove('center')
+        }
+    }
+})
+
+dragger.on('dragend', (e) => {
+    if(e.isDraggableElement) {  
+        e.target.classList.remove('grabbed') 
+    }
+})
+
+if('removeDraggerListener' === true) {
+    dragger.destroy()
+}
+
 ```
 
-# _**TIP**_
+CSS
+```css
+.drag-container {  
+    display: flex;
+    flex-wrap: wrap;
+    height: 250px;  
+    position: relative;
+}
+.drag-long-ground {
+    display: block;
+    overflow: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+.drag-long-ground > .drag-around {
+    width: 1250px;
+    height: 1250px;
+}
+.drag-container > .drag-around {
+    flex: 1 1;
+    width: 100%; 
+    border: 2px dashed #fff;
+    border-radius: 15px;
+    padding: 15px;
+    transition: box-shadow 300ms ease-in;
+}
+.drag-container .draggable-box {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 50px;
+    min-height: 50px;
+    padding: 0 10px; 
+    border-radius: 10px;
+    transition: box-shadow 300ms ease-in;
+    cursor: grab;
+}
+.drag-container .draggable-box > h1 { 
+    margin-bottom: 5px;
+}
+.drag-container .grabbed {
+    cursor: grabbing;
+    margin: 0;
+}
+.draggable-box.center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+```
 
-The unmounting time is 600 milliseconds so if you are about to customize closing animation it must be within that time range to show the whole animation
+HTML
+```html
+<div class="drag-container drag-long-ground" id="drag-autoscroll">  
+    <div class="drag-around n-border-color">
+        <div class="draggable-box center n-flat">
+            <h1>Drag Me</h1>
+        </div> 
+    </div>
+</div>
+```
