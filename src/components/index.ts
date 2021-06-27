@@ -23,7 +23,7 @@ import {
 export default class Dragger {
 	container: HTMLElement;
 	options: DraggerOptionProps;
-	emitters: Partial<Record<DraggerEventSupportType, (event: DraggerEvent & DraggerEventOptionProps) => void>> = {};
+	emitters: Partial<Record<DraggerEventSupportType, (event: DraggerEvent & DraggerEventOptionProps, context: Record<any, any>) => void>>;
 	modifiers?: any[];
     pluginDumps: any;
     initHandler?: (event: any) => void;
@@ -40,6 +40,7 @@ export default class Dragger {
                 ? container as HTMLElement
                 : d.body;
 		this.options = { ...defaultOptions, ...options };
+		this.emitters = {}
 		Object.keys(this.options).forEach((key) => {
 			validateType(this.options[key], 
 				[ key === 'autoscrollSensitivity' 
@@ -113,11 +114,13 @@ export default class Dragger {
 				endY: startY,
 				clientX: startC.clientX,
 				clientY: startC.clientY,
-            }
+			}
+			
+			const context = {}
 
 			if(is.fnc(dragstart)) {
                 //@ts-ignore
-                 dragstart!.call(container, new DraggerEvent(startEvent, draggerEvent))
+                 dragstart!.call(container, new DraggerEvent(startEvent, draggerEvent), context)
             }
 
 			if(isDraggable) {
@@ -183,7 +186,7 @@ export default class Dragger {
 										type: 'dragenter',
 										srcDroppable,
 										droppableTarget,
-                                    }));
+                                    }), context);
                                 }
                                 
                                 if(startDraggingObservables.droppableAt && is.fnc(dragexit)) {
@@ -192,7 +195,7 @@ export default class Dragger {
 										...draggerEvent,
 										type: 'dragexit',
 										srcDroppable: startDraggingObservables.droppableAt,
-                                    }));
+                                    }), context);
                                 }
                             }
                             
@@ -205,7 +208,7 @@ export default class Dragger {
 									type: 'dragover',
 									srcDroppable,
 									droppableTarget,
-                                }))
+                                }), context)
                             }
 						}
 					}
@@ -216,7 +219,7 @@ export default class Dragger {
                     dragmove!.call(container, new DraggerEvent(moveEvent, {
                         ...draggerEvent, 
                         type: 'dragmove'
-                    }));
+                    }), context);
                 }
 			};
 
@@ -252,13 +255,16 @@ export default class Dragger {
 					});
 					
                     if(isOverDroppable && is.fnc(drop)) {
+						const targetCurrentDroppable = target.closest(droppableQuery!) as HTMLElement
                         // @ts-ignore
                         drop!.call(srcDroppable, new DraggerEvent(endEvent, {
                             ...draggerEvent,
                             type: 'drop',
                             srcDroppable,
-                            droppableTarget,
-                        }))
+							droppableTarget,
+							targetCurrentDroppable,
+							isSameDroppable: srcDroppable === targetCurrentDroppable
+                        }), context)
                     }
 				}
 				
@@ -267,7 +273,7 @@ export default class Dragger {
                     dragend!.call(container, new DraggerEvent(endEvent, {
                         ...draggerEvent, 
                         type: 'dragend'
-                    }));
+                    }), context);
 				}
 				
 				if(isSupportPointer) {
@@ -283,7 +289,7 @@ export default class Dragger {
 		on(container, isSupportPointer ? 'pointerdown' : 'mousedown touchstart', this.initHandler, eventListenerOption);
 	}
 
-	on(eventType: DraggerEventSupportType, callback: (event: DraggerEvent & DraggerEventOptionProps) => void) {
+	on(eventType: DraggerEventSupportType, callback: (event: DraggerEvent & DraggerEventOptionProps, context: Record<any, any>) => void) {
 		validateEvent('on', eventType)
 		this.emitters[eventType] = callback;
 	}
