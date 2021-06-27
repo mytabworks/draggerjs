@@ -1,7 +1,7 @@
 {
   "name": "draggerjs",
-  "version": "0.1.1",
-  "description": "stateless react toaster made easy.",
+  "version": "0.1.2",
+  "description": "draggable made easy for you.",
   "main": "./cjs",
   "module": "./esm",
   "types": "./esm",
