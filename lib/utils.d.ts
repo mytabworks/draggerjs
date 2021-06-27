@@ -41,6 +41,8 @@ export declare type DraggerEventOptionProps = {
     clientX: number;
     clientY: number;
     srcDroppable?: HTMLElement | null;
+    targetCurrentDroppable?: HTMLElement | null;
+    isSameDroppable?: boolean;
     droppableTarget?: HTMLElement | null;
 };
 export declare class DraggerEvent {
