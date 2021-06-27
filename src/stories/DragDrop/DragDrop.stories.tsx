@@ -4,10 +4,10 @@ import Draggerjs from '../../../lib/dist/js'
 import './index.scss'
 
 export default {
-    title: 'Auto Scroll',
+    title: 'Drag and Drop',
 };
 
-const DateTemplate: Parameters = (args) => {
+const DragDrop: Parameters = (args) => {
     
    useEffect(() => {
     const dragger = new Draggerjs('#drag-droppable', {
@@ -71,8 +71,4 @@ const DateTemplate: Parameters = (args) => {
     )
 };
 
-export const DefaultDate = DateTemplate.bind({});
-
-DefaultDate.args = {
-    body: "Successfully show toaster"
-}
+export const DefaultDragDrop = DragDrop.bind({});
