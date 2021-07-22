@@ -1,6 +1,5 @@
 import {
 	d,
-	isSupportPointer,
     defaultOptions,
     DraggerOptionProps,
     DraggerEventSupportType,
@@ -66,7 +65,8 @@ export default class Dragger {
             allowExactTargetDraggable, 
             autoscroll, 
             autoscrollSensitivity, 
-            eventListenerOption 
+			eventListenerOption,
+			allowPointerEvent
 		} = this.options;
 
 		/*DRAG-START*/
@@ -131,7 +131,7 @@ export default class Dragger {
                 })
 			}
 			
-			if(isSupportPointer) {
+			if(allowPointerEvent) {
 				target.setPointerCapture(startEvent.pointerId)
 			}
 			
@@ -223,7 +223,7 @@ export default class Dragger {
                 }
 			};
 
-			on(container, isSupportPointer ? 'pointermove' : 'mousemove touchmove', moveHandler, eventListenerOption);
+			on(container, allowPointerEvent ? 'pointermove' : 'mousemove touchmove', moveHandler, eventListenerOption);
 
 			/*DRAG-END*/
 			const endHandler = (endEvent: any) => {
@@ -276,17 +276,17 @@ export default class Dragger {
                     }), context);
 				}
 				
-				if(isSupportPointer) {
+				if(allowPointerEvent) {
 					target.releasePointerCapture(endEvent.pointerId)
 				}
 					
-				off(container, isSupportPointer ? 'pointermove' : 'mousemove touchmove', moveHandler, eventListenerOption);
-				off(container, isSupportPointer ? 'pointerup' : 'mouseup touchend', endHandler, eventListenerOption);
+				off(container, allowPointerEvent ? 'pointermove' : 'mousemove touchmove', moveHandler, eventListenerOption);
+				off(container, allowPointerEvent ? 'pointerup' : 'mouseup touchend', endHandler, eventListenerOption);
 			};
 
-			on(container, isSupportPointer ? 'pointerup' : 'mouseup touchend', endHandler, eventListenerOption);
+			on(container, allowPointerEvent ? 'pointerup' : 'mouseup touchend', endHandler, eventListenerOption);
 		};
-		on(container, isSupportPointer ? 'pointerdown' : 'mousedown touchstart', this.initHandler, eventListenerOption);
+		on(container, allowPointerEvent ? 'pointerdown' : 'mousedown touchstart', this.initHandler, eventListenerOption);
 	}
 
 	on(eventType: DraggerEventSupportType, callback: (event: DraggerEvent & DraggerEventOptionProps, context: Record<any, any>) => void) {
@@ -300,6 +300,6 @@ export default class Dragger {
 	}
 
 	destroy() {
-		off(this.container, isSupportPointer ? 'pointerdown' : 'mousedown touchstart', this.initHandler!, this.options.eventListenerOption);
+		off(this.container, this.options.allowPointerEvent ? 'pointerdown' : 'mousedown touchstart', this.initHandler!, this.options.eventListenerOption);
 	}
 }

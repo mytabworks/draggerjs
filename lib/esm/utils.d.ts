@@ -1,7 +1,6 @@
 export declare const w: Window & typeof globalThis;
 export declare const d: Document;
 export declare const root: HTMLElement;
-export declare const isSupportPointer = true;
 export declare type DraggerEventSupportType = 'dragstart' | 'dragmove' | 'dragend' | 'dragenter' | 'dragover' | 'dragexit' | 'drop';
 export declare type DraggerOptionProps = {
     axis?: 'x' | 'y';
@@ -12,6 +11,7 @@ export declare type DraggerOptionProps = {
     autoscroll?: boolean;
     autoscrollSensitivity?: number;
     eventListenerOption?: any;
+    allowPointerEvent?: boolean;
 };
 export declare const defaultOptions: DraggerOptionProps;
 export declare const requestAnimationFrame: ((callback: FrameRequestCallback) => number) & typeof globalThis.requestAnimationFrame;

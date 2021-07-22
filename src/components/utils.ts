@@ -1,7 +1,6 @@
 export const w = window
 export const d = document
 export const root = d.documentElement
-export const isSupportPointer = !!root.setPointerCapture
 export type DraggerEventSupportType = 'dragstart' | 'dragmove' | 'dragend' | 'dragenter' | 'dragover' | 'dragexit' | 'drop'
 
 export type DraggerOptionProps = {
@@ -12,7 +11,8 @@ export type DraggerOptionProps = {
     allowExactTargetDraggable?: boolean;
     autoscroll?: boolean;
     autoscrollSensitivity?: number;
-    eventListenerOption?: any
+    eventListenerOption?: any;
+    allowPointerEvent?: boolean;
 }
 
 export const defaultOptions: DraggerOptionProps = {
@@ -20,7 +20,8 @@ export const defaultOptions: DraggerOptionProps = {
     allowExactTargetDraggable: false,
     autoscroll: false,
     autoscrollSensitivity: 20,
-    eventListenerOption: false
+    eventListenerOption: false,
+    allowPointerEvent: true
 };
 
 
@@ -158,11 +159,11 @@ export const getCoordinates = (event: any, {
 }: GetCoordinatesOptions) => { 
     let { clientX, clientY }: { clientX: number, clientY: number } = (event.touches && event.touches[0]) || event 
     const bound = container.getBoundingClientRect() 
-    let x = clientX
-    let y = clientY
+    let x = container.scrollLeft + (clientX - bound.left) - (isDraggable ? initialPosition.left : 0)
+    let y = container.scrollTop + (clientY - bound.top) - (isDraggable ? initialPosition.top : 0)
     if(allowBoundContainer) {
-        x = getBoundX(container.scrollLeft + (x - bound.left) - (isDraggable ? initialPosition.left : 0), initialPosition)
-        y = getBoundY(container.scrollTop + (y - bound.top) - (isDraggable ? initialPosition.top : 0), initialPosition)
+        x = getBoundX(x, initialPosition)
+        y = getBoundY(y, initialPosition)
     }
     return {
         clientX,
