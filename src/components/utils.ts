@@ -243,7 +243,7 @@ export const autoScrollAlgorithm = (startDraggingObservables: any, {
 
     const handleScroll = () => {
         const bound = container.getBoundingClientRect()
-        const requestAgain = getAncestorsScrolledTree(container).reduce((result, ancestorEL, _, reduceArray) => {
+        const requestAgain = getAncestorsScrolledTree(target).reduce((result, ancestorEL, _, reduceArray) => {
             const { top, left } = ancestorEL.nodeName !== "HTML" ? ancestorEL.getBoundingClientRect() : {
                 top: 0,
                 left: 0 
@@ -309,7 +309,10 @@ export const autoScrollAlgorithm = (startDraggingObservables: any, {
             if(hasEdgeScreen) {
                 ancestorEL.scrollTop = scrollTop
                 ancestorEL.scrollLeft = scrollLeft
-                css(target, position)
+
+                if(!ancestorEL.matches('[data-draggerjs="not-relative"]'))
+                    css(target, position)
+                    
                 // stop the reduce iteration
                 reduceArray.splice(1)
             }
