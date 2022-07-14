@@ -1,6 +1,6 @@
 {
   "name": "draggerjs",
-  "version": "0.1.4",
+  "version": "0.1.6",
   "description": "draggable made easy for you.",
   "main": "./cjs",
   "module": "./esm",
