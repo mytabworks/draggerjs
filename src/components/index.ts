@@ -66,7 +66,8 @@ export default class Dragger {
             autoscroll, 
             autoscrollSensitivity, 
 			eventListenerOption,
-			allowPointerEvent
+			allowPointerEvent,
+			allowWindowBound
 		} = this.options;
 
 		/*DRAG-START*/
@@ -90,12 +91,14 @@ export default class Dragger {
             const initialPosition = getInitialPosition(startEvent, {
                 target,
                 container,
-                isDraggable
+				isDraggable,
+				allowWindowBound
             })
 			const getCoordinatesOptions = { 
                 container, 
                 isDraggable, 
-                allowBoundContainer,
+				allowBoundContainer,
+				allowWindowBound,
                 initialPosition: initialPosition
             };
 

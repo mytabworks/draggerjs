@@ -13,6 +13,7 @@ export type DraggerOptionProps = {
     autoscrollSensitivity?: number;
     eventListenerOption?: any;
     allowPointerEvent?: boolean;
+    allowWindowBound?: boolean;
 }
 
 export const defaultOptions: DraggerOptionProps = {
@@ -21,7 +22,8 @@ export const defaultOptions: DraggerOptionProps = {
     autoscroll: false,
     autoscrollSensitivity: 20,
     eventListenerOption: false,
-    allowPointerEvent: true
+    allowPointerEvent: true,
+    allowWindowBound: false
 };
 
 
@@ -124,12 +126,14 @@ type GetInitialPositionOptions = {
     container: HTMLElement;
     target: HTMLElement;
     isDraggable: boolean;
+    allowWindowBound?: boolean;
 }
 
 export const getInitialPosition = (event: any, {
     target,
     container, 
-    isDraggable
+    isDraggable,
+    allowWindowBound
 }: GetInitialPositionOptions) => {
     const { clientX, clientY } = (event.touches && event.touches[0]) || event 
     const { left = 0, top = 0, width = 0, height = 0 } = isDraggable ? target.getBoundingClientRect() : {}
@@ -138,8 +142,8 @@ export const getInitialPosition = (event: any, {
         top: clientY - top,
         width: width,
         height: height,
-        containerHeight: container.scrollHeight,
-        containerWidth: container.scrollWidth,
+        containerHeight: allowWindowBound ? window.innerHeight : container.scrollHeight,
+        containerWidth: allowWindowBound ? window.innerWidth : container.scrollWidth,
     }
     
 }
@@ -148,6 +152,7 @@ type GetCoordinatesOptions = {
     container: HTMLElement;
     isDraggable?: boolean;
     allowBoundContainer?: boolean;
+    allowWindowBound?: boolean;
     initialPosition: any;
 }
 
@@ -155,12 +160,17 @@ export const getCoordinates = (event: any, {
     container,
     isDraggable, 
     initialPosition, 
-    allowBoundContainer 
+    allowBoundContainer,
+    allowWindowBound
 }: GetCoordinatesOptions) => { 
     let { clientX, clientY }: { clientX: number, clientY: number } = (event.touches && event.touches[0]) || event 
-    const bound = container.getBoundingClientRect() 
-    let x = container.scrollLeft + (clientX - bound.left) - (isDraggable ? initialPosition.left : 0)
-    let y = container.scrollTop + (clientY - bound.top) - (isDraggable ? initialPosition.top : 0)
+    const bound = allowWindowBound ? { top: 0, left: 0 } : container.getBoundingClientRect() 
+    const containerScroll = {
+        x: allowWindowBound ? 0 : container.scrollLeft,
+        y: allowWindowBound ? 0 : container.scrollTop
+    }
+    let x = containerScroll.x + (clientX - bound.left) - (isDraggable ? initialPosition.left : 0)
+    let y = containerScroll.y + (clientY - bound.top) - (isDraggable ? initialPosition.top : 0)
     if(allowBoundContainer) {
         x = getBoundX(x, initialPosition)
         y = getBoundY(y, initialPosition)

@@ -12,6 +12,7 @@ export declare type DraggerOptionProps = {
     autoscrollSensitivity?: number;
     eventListenerOption?: any;
     allowPointerEvent?: boolean;
+    allowWindowBound?: boolean;
 };
 export declare const defaultOptions: DraggerOptionProps;
 export declare const requestAnimationFrame: ((callback: FrameRequestCallback) => number) & typeof globalThis.requestAnimationFrame;
@@ -60,8 +61,9 @@ declare type GetInitialPositionOptions = {
     container: HTMLElement;
     target: HTMLElement;
     isDraggable: boolean;
+    allowWindowBound?: boolean;
 };
-export declare const getInitialPosition: (event: any, { target, container, isDraggable }: GetInitialPositionOptions) => {
+export declare const getInitialPosition: (event: any, { target, container, isDraggable, allowWindowBound }: GetInitialPositionOptions) => {
     left: number;
     top: number;
     width: number;
@@ -73,9 +75,10 @@ declare type GetCoordinatesOptions = {
     container: HTMLElement;
     isDraggable?: boolean;
     allowBoundContainer?: boolean;
+    allowWindowBound?: boolean;
     initialPosition: any;
 };
-export declare const getCoordinates: (event: any, { container, isDraggable, initialPosition, allowBoundContainer }: GetCoordinatesOptions) => {
+export declare const getCoordinates: (event: any, { container, isDraggable, initialPosition, allowBoundContainer, allowWindowBound }: GetCoordinatesOptions) => {
     clientX: number;
     clientY: number;
     x: number;
